@@ -1,7 +1,8 @@
 import smtplib, ssl
-from email.message import EmailMessage
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
-def send_email(title, message):
+def send_email(subject: str, msg: str) -> None:
     host = "smtp.gmail.com"
     port = 465
 
@@ -11,12 +12,14 @@ def send_email(title, message):
     receiver = "alireza1384928+news@gmail.com"
     context = ssl.create_default_context()
 
-    msg = EmailMessage()
-    msg["Subject"] = title
-    msg["From"] = username
-    msg["To"] = receiver
-    msg.set_content(message)
+    email_message = MIMEMultipart()
+    email_message["Subject"] = subject
+    email_message["From"] = username
+    email_message["To"] = receiver
+
+    mime_text = MIMEText(msg, "html")
+    email_message.attach(mime_text)
 
     with smtplib.SMTP_SSL(host, port, context=context) as server:
         server.login(username, password)
-        server.send_message(msg)
+        server.send_message(email_message)
