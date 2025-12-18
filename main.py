@@ -33,7 +33,6 @@ def fetch_news(topic: str, from_date: str = TODAY_DATE, n_news = 15) -> list:
     articles = data["articles"]
 
     news_list = []
-
     for article in articles:
         news = {
             "title": article["title"],
@@ -46,5 +45,5 @@ def fetch_news(topic: str, from_date: str = TODAY_DATE, n_news = 15) -> list:
 
 
 if __name__ == "__main__":
-    msg = fetch_news("Gemini")
+    msg = fetch_news("RAM")
     send_email("Today's News", msg)
