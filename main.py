@@ -1,49 +1,63 @@
-import requests
-from datetime import date
-from email_sender import send_email
+from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QLineEdit, \
+     QVBoxLayout, QPushButton, QComboBox, QMessageBox
+from dialogs import TextDialog, EmailDialog
+from news import News
+import sys
 
 API_KEY = "7f38ced1aeda423294e57b50ee73ff9f"
 
-TODAY_DATE = date.today().strftime("%Y-%m-$d")
 
-
-def make_html_msg(news_func):
-    def wrapper(*args, **kwargs):
-        todays_news = news_func(*args, **kwargs)
-
-        msg = ""
-        for news in todays_news:
-            msg += f"<b>{news["title"]}</b><br>" \
-                f"{news["desc"]}<br>" \
-                f"{news["url"]}<br><br><br>"
-
-        return msg
-    return wrapper
-
-
-@make_html_msg
-def fetch_news(topic: str, from_date: str = TODAY_DATE, n_news = 15) -> list:
-
-    URL = f"https://newsapi.org/v2/everything?q={topic}" \
-          f"&from={from_date}&sortBy=popularity&searchIn=title" \
-          f"&language=en&pageSize={n_news + 1}&apiKey={API_KEY}"
-
-    res = requests.get(URL)
-    data = res.json()
-    articles = data["articles"]
-
-    news_list = []
-    for article in articles:
-        news = {
-            "title": article["title"],
-            "desc": article["description"],
-            "url": article["url"]
-        }
-        news_list.append(news)
-
-    return news_list
+class MainWindow(QWidget):
+    def __init__(self) -> None:
+        super().__init__()
+        # Configuation
+        self.setWindowTitle("News Fetcher")
+        self.setFixedSize(250, 150)
+        # Widgets
+        label1 = QLabel("Enter a keyword to search for:")
+        self.keyword_input = QLineEdit()
+        self.keyword_input.setPlaceholderText("Keyword...")
+        label2 = QLabel("In which way do you want to get the news?")
+        self.combo_box = QComboBox()
+        self.combo_box.addItems(["text", "email"])
+        button = QPushButton("Confirm")
+        button.clicked.connect(self.confirm)
+        # Add widget to layout
+        layout = QVBoxLayout()
+        layout.addWidget(label1)
+        layout.addWidget(self.keyword_input)
+        layout.addWidget(label2)
+        layout.addWidget(self.combo_box)
+        layout.addWidget(button)
+        # Set layout
+        self.setLayout(layout)
+    
+    def confirm(self) -> None:
+        keyword = self.keyword_input.text()
+        if keyword:
+            # FIXME: Because of no internet access these lines has been commented
+            # news_obj = News(API_KEY)
+            # news = news_obj.fetch_news(keyword)
+            # news_text = news_obj.make_html(news)
+            news_text = ""
+            
+            option = self.combo_box.currentText()
+            if option == "text":
+                keyword = main_window.keyword_input.text()
+                dialog = TextDialog(keyword, news_text)
+                dialog.exec()
+            else:
+                dialog = EmailDialog(keyword, news_text)
+                dialog.exec()
+        else:
+            warning = QMessageBox()
+            warning.setWindowTitle("Warning")
+            warning.setText("Please enter a keyword.")
+            warning.exec()
 
 
 if __name__ == "__main__":
-    msg = fetch_news("RAM")
-    send_email("Today's News", msg)
+    app = QApplication(sys.argv)
+    main_window = MainWindow()
+    main_window.show()
+    sys.exit(app.exec())
