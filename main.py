@@ -4,8 +4,6 @@ from dialogs import TextDialog, EmailDialog
 from news import News
 import sys
 
-API_KEY = "7f38ced1aeda423294e57b50ee73ff9f"
-
 
 class MainWindow(QWidget):
     def __init__(self) -> None:
@@ -35,11 +33,9 @@ class MainWindow(QWidget):
     def confirm(self) -> None:
         keyword = self.keyword_input.text()
         if keyword:
-            # FIXME: Because of no internet access these lines has been commented
-            # news_obj = News(API_KEY)
-            # news = news_obj.fetch_news(keyword)
-            # news_text = news_obj.make_html(news)
-            news_text = ""
+            news_obj = News()
+            news = news_obj.fetch_news(keyword, "2026-06-20")
+            news_text = news_obj.make_html(news)
             
             option = self.combo_box.currentText()
             if option == "text":

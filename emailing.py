@@ -1,10 +1,10 @@
 import smtplib, ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from decouple import config
 
-# Your email and password goes here
-sender_email_address = ""
-sender_password = ""
+SERVER_EMAIL_USERNAME = config("SERVER_EMAIL_USERNAME")
+SERVER_EMAIL_PASSWORD = config("SERVER_EMAIL_PASSWORD")
 
 
 class Email:
@@ -13,8 +13,8 @@ class Email:
         host = "smtp.gmail.com"
         port = 465
     
-        username = sender_email_address
-        password = sender_password
+        username = SERVER_EMAIL_USERNAME
+        password = SERVER_EMAIL_PASSWORD
     
         context = ssl.create_default_context()
         email_message = MIMEMultipart()

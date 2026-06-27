@@ -1,18 +1,18 @@
 from datetime import date
+from decouple import config
 import requests
+
+API_KEY = config("NEWS_API_KEY")
 
 
 class News:
-    def __init__(self, api_key: str) -> None:
-        self.api_key = api_key
-    
     def fetch_news(self, topic: str, from_date: str | None = None,
                  n_news: int = 10) -> list[str]:
         if from_date is None:
             from_date = date.today().strftime("%Y-%m-%d")
         URL = f"https://newsapi.org/v2/everything?q={topic}" \
               f"&from={from_date}&sortBy=popularity&searchIn=title" \
-              f"&language=en&pageSize={n_news + 1}&apiKey={self.api_key}"
+              f"&language=en&pageSize={n_news + 1}&apiKey={API_KEY}"
 
         res = requests.get(URL)
         data = res.json()
@@ -26,7 +26,7 @@ class News:
                 "url": article["url"]
             })
         return news_list
-    
+
     @staticmethod
     def make_html(news_list: list[str]) -> str:
         msg = ""

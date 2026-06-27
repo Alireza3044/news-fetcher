@@ -42,6 +42,8 @@ class EmailDialog(QDialog):
     def send_mail(self) -> None:
         subject = f"News on {self.keyword}"
         message = self.email_html
+        success = QMessageBox()
+        
         receiver = self.email_input.text()
         if receiver:
             try:
@@ -53,14 +55,12 @@ class EmailDialog(QDialog):
                 error.setText(err_msg)
                 error.exec()
             else:
-                success = QMessageBox()
                 success.setWindowTitle("Success")
                 success.setText("The email has been sent successfully!")
                 success.exec()
             finally:
                 self.close()
         else:
-            success = QMessageBox()
             success.setWindowTitle("Warning")
             success.setText("Please fill in the receiver email address.")
             success.exec()
