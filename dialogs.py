@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QDialog, QLabel, QLineEdit, QVBoxLayout, \
     QPushButton, QMessageBox, QTextBrowser
-from emailing import Email
+from emailing import send_email
 
 
 class TextDialog(QDialog):
@@ -47,11 +47,11 @@ class EmailDialog(QDialog):
         receiver = self.email_input.text()
         if receiver:
             try:
-                Email.send_email(subject, message, receiver)
+                send_email(subject, message, receiver)
             except Exception as e:
                 error = QMessageBox()
                 error.setWindowTitle("Error")
-                err_msg = f"Something went wrong during sending the email:{e}"
+                err_msg = f"Something went wrong during sending the email: {e}"
                 error.setText(err_msg)
                 error.exec()
             else:

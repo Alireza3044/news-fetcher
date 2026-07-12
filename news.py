@@ -2,7 +2,7 @@ from datetime import date
 from decouple import config
 import requests
 
-API_KEY = config("NEWS_API_KEY")
+API_KEY = config("API_KEY")
 
 
 class News:
