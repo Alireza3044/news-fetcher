@@ -1,29 +1,82 @@
-# About the Project
+# News Fetcher
 
-This tiny GUI app gets news from the web via <a href="https://newsapi.org">News API</a> and shows or emails the requested news.
+A lightweight PyQt5 desktop application that fetches real-time news articles based on custom keywords using NewsAPI, presenting the results directly in a rich-text UI dialog or delivering formatted HTML digests straight to your email.
 
-# Getting Started
+---
 
-1. Clone the project to your machine by running the following command:
+## Application Preview
 
-    `git clone https://github.com/Alireza3044/news-fetcher.git`
+<p align="center">
+   <img src="assets/1.png" width="40%" title="Main Window">
+   <img src="assets/2.png" width="40%" title="News Delivery Modes">
+</p>
+<p align="center">
+   <img src="assets/3.png" width="48%" title="Text Dialog Delivery Mode">
+   <img src="assets/4.png" width="40%" title="Email Input">
+</p>
+<p align="center">
+   <img src="assets/5.png" width="40%" title="Email Sent Dialog">
+   <img src="assets/6.png" width="58%" title="Emailed News">
+</p>
 
-2. Run the command `python -r requirements.txt` to install the required packages.
+---
 
-3. Create an account on the <a href="https://newsapi.org">News API</a>'s website.
+## Features
 
-4. Create a `.env` file in the projects root directory and create the following variables:
+* Keyword Search: Fetch the latest and most popular news headlines matching any topic directly via NewsAPI.
+* Dual Delivery Modes:
+  * In-App Viewer: Browse structured HTML news digests instantly inside a dedicated PyQt5 QTextBrowser dialog.
+  * Email Dispatch: Send formatted HTML news summaries to any email address using secure SSL-encrypted SMTP.
+* Decoupled Architecture: Clean separation between GUI components (PyQt5), API network requests (requests), and email dispatches (smtplib).
+* Environment-Based Configuration: Managed credentials for NewsAPI and SMTP server settings via python-decouple.
 
-    `API_KEY`
-    
-    `SERVER_HOST_NAME`    
-    
-    `SERVER_HOST_PORT`
-    
-    `SERVER_EMAIL_USERNAME`
-    
-    `SERVER_EMAIL_PASSWORD`
+---
 
-5. Provide your API key to `API_KEY` variable, and your hosting server's name and port to `SERVER_HOST_NAME` and `SERVER_HOST_PORT`. An example could be `smtp.gmail.com` with port `465`. Also a valid `SERVER_EMAIL_USERNAME` and `SERVER_EMAIL_PASSWORD` should be provided.
+## Tech Stack
 
-6. Now run the GUI by `python main.py`.
+* GUI Framework: PyQt5
+* HTTP Client: Requests
+* API: NewsAPI Everything Endpoint
+* Mail Protocol: SMTP with SSL (smtplib, MIMEText)
+
+---
+
+## Getting Started
+
+### Prerequisites
+* Python 3.10+
+* A free API Key from [NewsAPI.org](https://newsapi.org/)
+
+### Installation
+
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/Alireza3044/news-fetcher.git
+    cd news-fetcher
+    ```
+   
+2. Install dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
+   
+3. Configure environment variables:
+   Create a .env file in the root directory:
+  
+    #### NewsAPI Credentials
+    ```env
+    API_KEY=your_newsapi_key_here
+    ```
+
+    #### SMTP Server Credentials (e.g., Gmail SSL)
+    ```env
+    SERVER_HOST_NAME=smtp.gmail.com
+    SERVER_HOST_PORT=465
+    SERVER_EMAIL_USERNAME=your-email@gmail.com
+    SERVER_EMAIL_PASSWORD=your-app-password
+    ```
+
+4. Run the Application:
+    ```bash
+    python main.py
+    ```
