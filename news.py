@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 from decouple import config
 import requests
 
@@ -10,13 +10,15 @@ class News:
     def fetch(topic: str, from_date: str | None = None,
                  n_news: int = 10) -> list[str]:
         if from_date is None:
-            from_date = date.today().strftime("%Y-%m-%d")
+            from_date = date.today() - timedelta(days=1)
+            from_date = from_date.strftime("%Y-%m-%d")
+
         URL = f"https://newsapi.org/v2/everything?q={topic}" \
               f"&from={from_date}&sortBy=popularity&searchIn=title" \
               f"&language=en&pageSize={n_news + 1}&apiKey={API_KEY}"
 
-        res = requests.get(URL)
-        data = res.json()
+        response = requests.get(URL)
+        data = response.json()
         articles = data["articles"]
 
         news_list = []
