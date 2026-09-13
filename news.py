@@ -6,7 +6,8 @@ API_KEY = config("API_KEY")
 
 
 class News:
-    def fetch_news(self, topic: str, from_date: str | None = None,
+    @staticmethod
+    def fetch(topic: str, from_date: str | None = None,
                  n_news: int = 10) -> list[str]:
         if from_date is None:
             from_date = date.today().strftime("%Y-%m-%d")

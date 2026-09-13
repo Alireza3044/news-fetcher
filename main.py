@@ -33,9 +33,8 @@ class MainWindow(QWidget):
     def confirm(self) -> None:
         keyword = self.keyword_input.text()
         if keyword:
-            news_obj = News()
-            news = news_obj.fetch_news(keyword, "2026-06-20")
-            news_text = news_obj.make_html(news)
+            news = News.fetch(keyword, "2026-06-20")
+            news_text = News.make_html(news)
             
             option = self.combo_box.currentText()
             if option == "text":
